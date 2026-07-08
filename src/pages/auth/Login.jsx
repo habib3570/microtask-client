@@ -87,6 +87,7 @@ const Login = () => {
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300"
               />
             </div>
+  
 
             <div>
               <div className="flex items-center justify-between mb-1.5">

@@ -10,28 +10,26 @@ import TaskDetails from "../pages/worker/TaskDetails";
 import MySubmissions from "../pages/worker/MySubmissions";
 import Withdrawals from "../pages/worker/Withdrawals";
 import BuyerDashboard from "../pages/buyer/BuyerDashboard";
+import AddTask from "../pages/buyer/AddTask";
+import MyTasks from "../pages/buyer/MyTasks";
+import ReviewSubmissions from "../pages/buyer/ReviewSubmissions";
+import PurchaseCoin from "../pages/buyer/PurchaseCoin";
+import PaymentHistory from "../pages/buyer/PaymentHistory";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import ManageUsers from "../pages/admin/ManageUsers";
+import ManageTasks from "../pages/admin/ManageTasks";
+import WithdrawRequests from "../pages/admin/WithdrawRequests";
+import PaymentRequests from "../pages/admin/PaymentRequests";
 import RoleRoute from "./RoleRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <PublicLayout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-    ],
+    children: [{ index: true, element: <Home /> }],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
   {
     path: "/dashboard/worker",
     element: (
@@ -54,7 +52,14 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </RoleRoute>
     ),
-    children: [{ index: true, element: <BuyerDashboard /> }],
+    children: [
+      { index: true, element: <BuyerDashboard /> },
+      { path: "add-task", element: <AddTask /> },
+      { path: "tasks", element: <MyTasks /> },
+      { path: "review", element: <ReviewSubmissions /> },
+      { path: "purchase-coin", element: <PurchaseCoin /> },
+      { path: "payments", element: <PaymentHistory /> },
+    ],
   },
   {
     path: "/dashboard/admin",
@@ -63,6 +68,12 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </RoleRoute>
     ),
-    children: [{ index: true, element: <AdminDashboard /> }],
+    children: [
+      { index: true, element: <AdminDashboard /> },
+      { path: "users", element: <ManageUsers /> },
+      { path: "tasks", element: <ManageTasks /> },
+      { path: "withdrawals", element: <WithdrawRequests /> },
+      { path: "payments", element: <PaymentRequests /> },
+    ],
   },
 ]);

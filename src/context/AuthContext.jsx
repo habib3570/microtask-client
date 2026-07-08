@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await fetchMe();
     } catch {
-      // silent fail — token may have expired, handled by interceptor
+      // silent fail — token may have expired, handled by the axios 401 interceptor
     }
   };
 
