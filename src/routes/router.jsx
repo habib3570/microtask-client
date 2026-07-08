@@ -4,6 +4,8 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/public/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import NotFound from "../pages/public/NotFound";
+import Notifications from "../pages/shared/Notifications";
 import WorkerDashboard from "../pages/worker/WorkerDashboard";
 import TaskList from "../pages/worker/TaskList";
 import TaskDetails from "../pages/worker/TaskDetails";
@@ -21,6 +23,7 @@ import ManageTasks from "../pages/admin/ManageTasks";
 import WithdrawRequests from "../pages/admin/WithdrawRequests";
 import PaymentRequests from "../pages/admin/PaymentRequests";
 import RoleRoute from "./RoleRoute";
+import PublicRoute from "./PublicRoute";
 
 export const router = createBrowserRouter([
   {
@@ -28,8 +31,22 @@ export const router = createBrowserRouter([
     element: <PublicLayout />,
     children: [{ index: true, element: <Home /> }],
   },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
+  {
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <PublicRoute>
+        <Register />
+      </PublicRoute>
+    ),
+  },
   {
     path: "/dashboard/worker",
     element: (
@@ -43,6 +60,7 @@ export const router = createBrowserRouter([
       { path: "tasks/:id", element: <TaskDetails /> },
       { path: "submissions", element: <MySubmissions /> },
       { path: "withdrawals", element: <Withdrawals /> },
+      { path: "notifications", element: <Notifications /> },
     ],
   },
   {
@@ -59,6 +77,7 @@ export const router = createBrowserRouter([
       { path: "review", element: <ReviewSubmissions /> },
       { path: "purchase-coin", element: <PurchaseCoin /> },
       { path: "payments", element: <PaymentHistory /> },
+      { path: "notifications", element: <Notifications /> },
     ],
   },
   {
@@ -74,6 +93,11 @@ export const router = createBrowserRouter([
       { path: "tasks", element: <ManageTasks /> },
       { path: "withdrawals", element: <WithdrawRequests /> },
       { path: "payments", element: <PaymentRequests /> },
+      { path: "notifications", element: <Notifications /> },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
