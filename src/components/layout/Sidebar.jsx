@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const menuByRole = {
@@ -37,14 +37,12 @@ const Sidebar = () => {
 
   return (
     <aside className="w-64 bg-white border-r border-gray-100 h-screen sticky top-0 flex flex-col">
-      <div className="p-6 border-b border-gray-100">
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-white font-bold text-lg">M</span>
-          </div>
-          <span className="text-lg font-bold text-gray-800">MicroTask</span>
+      <Link to="/" className="p-6 border-b border-gray-100 flex items-center gap-2 transition-colors duration-200 hover:bg-gray-50">
+        <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+          <span className="text-white font-bold text-lg">M</span>
         </div>
-      </div>
+        <span className="text-lg font-bold text-gray-800">MicroTask</span>
+      </Link>
 
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
@@ -84,7 +82,14 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-100">
+      <div className="p-4 border-t border-gray-100 space-y-1">
+        <Link
+          to="/"
+          className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-50 hover:text-gray-900"
+        >
+          <span>🌐</span>
+          Visit Website
+        </Link>
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-500 transition-all duration-200 hover:bg-red-50"

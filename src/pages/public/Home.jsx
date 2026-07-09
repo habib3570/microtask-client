@@ -10,12 +10,22 @@ import CtaSection from "../../components/home/CtaSection";
 const Home = () => {
   return (
     <div className="bg-white">
-      <HeroSection />
+      <div id="home">
+        <HeroSection />
+      </div>
       <StatsSection />
-      <HowItWorks />
-      <TopWorkers />
-      <AvailableTasks />
-      <WhyChooseUs />
+      <div id="how-it-works">
+        <HowItWorks />
+      </div>
+      <div id="top-workers">
+        <TopWorkers />
+      </div>
+      <div id="browse-tasks">
+        <AvailableTasks />
+      </div>
+      <div id="about">
+        <WhyChooseUs />
+      </div>
       <Testimonials />
       <CtaSection />
     </div>

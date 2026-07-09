@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { uploadImageToImgBB } from "../../services/imageUpload";
 import toast from "react-hot-toast";
 
 const AddTask = () => {
@@ -13,6 +14,8 @@ const AddTask = () => {
     submissionInfo: "",
     taskImageUrl: "",
   });
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -21,6 +24,30 @@ const AddTask = () => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImagePreview(URL.createObjectURL(file));
+    setUploadingImage(true);
+
+    try {
+      const url = await uploadImageToImgBB(file);
+      setForm((prev) => ({ ...prev, taskImageUrl: url }));
+      toast.success("Image uploaded!");
+    } catch (err) {
+      toast.error("Image upload failed. Try again.");
+      setImagePreview(null);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setForm((prev) => ({ ...prev, taskImageUrl: "" }));
   };
 
   const handleSubmit = async (e) => {
@@ -130,15 +157,32 @@ const AddTask = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1.5">Task image URL (optional)</label>
-          <input
-            type="text"
-            name="taskImageUrl"
-            value={form.taskImageUrl}
-            onChange={handleChange}
-            placeholder="https://..."
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300"
-          />
+          <label className="block text-sm font-semibold text-gray-700 mb-1.5">Task image (optional)</label>
+
+          {imagePreview ? (
+            <div className="relative w-full h-48 rounded-xl overflow-hidden border border-gray-200 group">
+              <img src={imagePreview} alt="Task preview" className="w-full h-full object-cover" />
+              {uploadingImage && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-gray-700 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-500 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer transition-all duration-200 hover:border-primary hover:bg-primary/5">
+              <span className="text-3xl mb-2">📷</span>
+              <span className="text-sm font-medium text-gray-600">Click to browse and upload an image</span>
+              <span className="text-xs text-gray-400 mt-1">PNG, JPG up to 5MB</span>
+              <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+            </label>
+          )}
         </div>
 
         <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between">
@@ -148,10 +192,10 @@ const AddTask = () => {
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || uploadingImage}
           className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl shadow-lg shadow-primary/25 transition-all duration-300 hover:bg-primary-dark hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-60"
         >
-          {submitting ? "Creating..." : "Create Task"}
+          {submitting ? "Creating..." : uploadingImage ? "Uploading image..." : "Create Task"}
         </button>
       </form>
     </div>
